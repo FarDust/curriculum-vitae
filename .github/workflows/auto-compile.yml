@@ -12,4 +12,10 @@ jobs:
           root_file: "*.tex"
           glob_root_file: true
           latexmk_use_xelatex: true
+      - uses: actions/upload-artifact@v2
+        with:
+          name: PDF
+          path: cv-gabriel-faundez.pdf
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/'
     
