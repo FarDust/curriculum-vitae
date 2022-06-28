@@ -17,5 +17,5 @@ jobs:
           name: PDF
           path: cv-gabriel-faundez.pdf
       - uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/'
+        if: startsWith(github.ref, 'refs/tags/')
     
