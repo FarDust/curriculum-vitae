@@ -9,6 +9,9 @@ on:
 jobs:
   build_latex:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v2
