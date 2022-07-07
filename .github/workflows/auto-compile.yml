@@ -33,6 +33,7 @@ jobs:
         uses: 'google-github-actions/upload-cloud-storage@v0'
         with:
           path: './'
-          destination: '${{ secrets.BUCKET_NAME }}/curriculum/'
+          destination: '${{ secrets.BUCKET_NAME }}/curriculum'
+          predefinedAcl: 'publicRead'
           glob: '*.pdf'
         
