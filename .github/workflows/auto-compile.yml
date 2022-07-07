@@ -1,6 +1,8 @@
 name: Build LaTeX document
 on: 
   push: 
+    branches: 
+      - main
   create:
       tags:
         - v*
@@ -18,8 +20,19 @@ jobs:
           latexmk_use_xelatex: true
       - uses: actions/upload-artifact@v2
         with:
-          name: PDF
+          name: cv-gabriel-faundez
           path: cv-gabriel-faundez.pdf
       - uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
-    
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: '${{ secrets.AUTH_PROVIDER  }}'
+          service_account: '${{ secrets.SERVICE_ACCOUNT }}'
+      - id: 'upload-file'
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: './'
+          destination: '${{ secrets.BUCKET_NAME }}/curriculum/'
+          glob: '*.pdf'
+        
