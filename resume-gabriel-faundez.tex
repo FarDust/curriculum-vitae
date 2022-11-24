@@ -22,12 +22,15 @@
 \usepackage{import}
 
 % Configure page margins with geometry
-\geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=1.8cm, footskip=.5cm}
+\geometry{left=1.5cm, top=1.5cm, right=1.5cm, bottom=1.5cm, footskip=.5cm}
 
 % Specify the location of the included fonts
 \fontdir[fonts/]
 
 \import{shared}{color}
+
+% Set false if you don't want to highlight section with awesome color
+\setbool{acvSectionColorHighlight}{true}
 
 % If you would like to change the social information separator from a pipe (|) to something else
 \renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
@@ -35,13 +38,12 @@
 
 \import{shared}{personal-info}
 
-
 %-------------------------------------------------------------------------------
 \begin{document}
 
 % Print the header with above personal informations
 % Give optional argument to change alignment(C: center, L: left, R: right)
-\makecvheader
+\makecvheader[C]
 
 \input{shared/footer.tex}
 
@@ -49,13 +51,14 @@
 %	CV/RESUME CONTENT
 %	Each section is imported separately, open each file in turn to modify content
 %-------------------------------------------------------------------------------
+\input{resume/summary.tex}
 \input{shared/education.tex}
-\input{cv/skills.tex}
-\input{cv/experience.tex}
-\newpage
-\input{cv/complementaries.tex}
-\input{cv/extracurricular.tex}
-
+\input{resume/certifications.tex}
+\input{resume/experience.tex}
+\input{resume/skills.tex}
+\pagebreak
+\input{resume/projects.tex}
+\input{resume/extracurricular.tex}
 
 %-------------------------------------------------------------------------------
 \end{document}
