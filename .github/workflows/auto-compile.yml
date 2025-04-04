@@ -21,7 +21,7 @@ jobs:
           root_file: "*.tex"
           glob_root_file: true
           latexmk_use_xelatex: true
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: cv-gabriel-faundez
           path: cv-gabriel-faundez.pdf
