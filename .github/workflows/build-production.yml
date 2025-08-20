@@ -1,0 +1,45 @@
+name: Build LaTeX - Production
+
+on:
+  push:
+    branches:
+      - main
+  create:
+    tags:
+      - v*
+
+jobs:
+  build-prod:
+    uses: ./.github/workflows/build-latex.yml
+    with:
+      environment: prod
+      artifact_suffix: ''
+      upload_to_gcs: true
+      gcs_destination_path: curriculum
+    secrets:
+      AUTH_PROVIDER: ${{ secrets.AUTH_PROVIDER }}
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+
+  create-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build-prod
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '*-gabriel-faundez'
+          merge-multiple: true
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            cv-gabriel-faundez.pdf
+            resume-gabriel-faundez.pdf
+            portfolio-gabriel-faundez.pdf
+          draft: false
+          prerelease: false
