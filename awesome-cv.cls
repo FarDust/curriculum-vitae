@@ -626,7 +626,7 @@
   \begin{center}
     \setlength\tabcolsep{1ex}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} r L{0.9\textwidth}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{0.25\textwidth} L{0.7\textwidth}}
 }{%
     \end{tabular*}
   \end{center}
