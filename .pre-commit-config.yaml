@@ -1,0 +1,77 @@
+# Pre-commit configuration for LaTeX CV project
+# See https://pre-commit.com for more information
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.pdf$'
+      - id: end-of-file-fixer
+        exclude: '\.pdf$'
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=5000']  # Allow PDF files up to 5MB
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # LaTeX specific checks
+  - repo: https://github.com/cmhughes/latexindent.pl
+    rev: V3.23.4
+    hooks:
+      - id: latexindent
+        args: ['-w', '-s']
+        files: '\.(tex|cls)$'
+
+  # LaTeX syntax and compilation checks
+  - repo: https://github.com/jonasbb/pre-commit-latex-hooks
+    rev: v1.4.4
+    hooks:
+      - id: american-eg-ie
+      - id: cleveref-capitalization
+      - id: csquotes
+      - id: ensure-labels-for-sections
+      - id: no-space-in-cite
+      - id: tilde-cite
+      - id: unique-labels
+      - id: cleveref-instead-of-autoref
+
+  # LaTeX build validation - removed due to repository not found
+  # Manual LaTeX compilation can be done using make commands
+
+  # Additional file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: destroyed-symlinks
+
+  # File structure validation
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.4
+    hooks:
+      - id: forbid-crlf
+      - id: remove-crlf
+      - id: forbid-tabs
+      - id: remove-tabs
+        args: [--whitespaces-count, '2']
+
+exclude: |
+  (?x)^(
+    .*\.pdf$|
+    .*\.log$|
+    .*\.aux$|
+    .*\.out$|
+    .*\.fls$|
+    .*\.fdb_latexmk$|
+    .*\.synctex.gz$
+  )$
+
+fail_fast: false

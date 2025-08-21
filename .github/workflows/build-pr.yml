@@ -39,33 +39,33 @@ jobs:
           edit-mode: replace
           body: |
             ## 📄 LaTeX Build Artifacts
-            
+
             Your LaTeX documents have been compiled successfully! You can download them directly from GCS:
-            
+
             | Document | Direct Download Link | GitHub Artifact |
             |----------|---------------------|------------------|
             | CV | [📄 cv-gabriel-faundez-pr-${{ github.event.number }}.pdf](https://storage.googleapis.com/${{ secrets.BUCKET_NAME }}/curriculum/pr/${{ github.event.number }}/cv-gabriel-faundez.pdf) | [View Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
             | Resume | [📄 resume-gabriel-faundez-pr-${{ github.event.number }}.pdf](https://storage.googleapis.com/${{ secrets.BUCKET_NAME }}/curriculum/pr/${{ github.event.number }}/resume-gabriel-faundez.pdf) | [View Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
             | Portfolio | [📄 portfolio-gabriel-faundez-pr-${{ github.event.number }}.pdf](https://storage.googleapis.com/${{ secrets.BUCKET_NAME }}/curriculum/pr/${{ github.event.number }}/portfolio-gabriel-faundez.pdf) | [View Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
-            
+
             **🚀 Quick Access:**
             - Click the direct download links above for immediate access to PDFs
             - No need to navigate through GitHub artifacts interface
             - Files are publicly accessible via Google Cloud Storage
-            
+
             **📁 Artifact Details:**
             - GCS Path: `curriculum/pr/${{ github.event.number }}/`
             - Artifact Names: `cv-gabriel-faundez-pr-${{ github.event.number }}.pdf`, `resume-gabriel-faundez-pr-${{ github.event.number }}.pdf`, `portfolio-gabriel-faundez-pr-${{ github.event.number }}.pdf`
-            
+
             <details>
             <summary>🔍 Alternative: Download from GitHub Artifacts</summary>
-            
+
             If you prefer to download from GitHub:
             1. Click on "View Artifacts" link above
             2. Scroll down to the "Artifacts" section
             3. Click on the artifact name to download the ZIP file
             4. Extract the ZIP to get your PDF
             </details>
-            
+
             ---
             *This comment will be updated when you push new changes to this PR.*

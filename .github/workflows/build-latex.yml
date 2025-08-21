@@ -36,39 +36,49 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    
+
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-        
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Install pre-commit
+        run: uv tool install pre-commit
+
+      - name: Run pre-commit checks
+        run: pre-commit run --all-files
+        continue-on-error: true  # Don't fail build on linting issues
+
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
           root_file: "*.tex"
           glob_root_file: true
           latexmk_use_xelatex: true
-          
+
       - name: Upload CV artifact
         uses: actions/upload-artifact@v4
         with:
           name: cv-gabriel-faundez${{ inputs.artifact_suffix }}
           path: cv-gabriel-faundez.pdf
-          retention-days: ${{ inputs.environment == 'dev' && 30 || 90 }}
-          
+          retention-days: ${{ inputs.environment == 'dev' && 30 || 0 }}
+
       - name: Upload Resume artifact
         uses: actions/upload-artifact@v4
         with:
           name: resume-gabriel-faundez${{ inputs.artifact_suffix }}
           path: resume-gabriel-faundez.pdf
-          retention-days: ${{ inputs.environment == 'dev' && 30 || 90 }}
-          
+          retention-days: ${{ inputs.environment == 'dev' && 30 || 0 }}
+
       - name: Upload Portfolio artifact
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-gabriel-faundez${{ inputs.artifact_suffix }}
           path: portfolio-gabriel-faundez.pdf
-          retention-days: ${{ inputs.environment == 'dev' && 30 || 90 }}
-          
+          retention-days: ${{ inputs.environment == 'dev' && 30 || 0 }}
+
       - name: Authenticate to Google Cloud
         if: inputs.upload_to_gcs
         id: 'auth'
@@ -76,7 +86,7 @@ jobs:
         with:
           workload_identity_provider: '${{ secrets.AUTH_PROVIDER }}'
           service_account: '${{ secrets.SERVICE_ACCOUNT }}'
-          
+
       - name: Upload to Google Cloud Storage
         if: inputs.upload_to_gcs
         id: 'upload-file'

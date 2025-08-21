@@ -33,7 +33,7 @@ jobs:
         with:
           pattern: '*-gabriel-faundez'
           merge-multiple: true
-          
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
