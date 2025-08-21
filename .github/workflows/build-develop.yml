@@ -1,0 +1,19 @@
+name: Build LaTeX - Develop
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-dev:
+    uses: ./.github/workflows/build-latex.yml
+    with:
+      environment: dev
+      artifact_suffix: -dev
+      upload_to_gcs: true
+      gcs_destination_path: curriculum/dev
+    secrets:
+      AUTH_PROVIDER: ${{ secrets.AUTH_PROVIDER }}
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}

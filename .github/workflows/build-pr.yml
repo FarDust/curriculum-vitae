@@ -1,0 +1,71 @@
+name: Build LaTeX - Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-pr:
+    uses: ./.github/workflows/build-latex.yml
+    with:
+      environment: dev
+      artifact_suffix: -pr-${{ github.event.number }}
+      upload_to_gcs: true
+      gcs_destination_path: curriculum/pr/${{ github.event.number }}
+    secrets:
+      AUTH_PROVIDER: ${{ secrets.AUTH_PROVIDER }}
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+
+  comment-pr:
+    needs: build-pr
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Find existing comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '📄 LaTeX Build Artifacts'
+
+      - name: Create or update PR comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.number }}
+          edit-mode: replace
+          body: |
+            ## 📄 LaTeX Build Artifacts
+
+            Your LaTeX documents have been compiled successfully! You can download them directly from GCS:
+
+            | Document | Direct Download Link | GitHub Artifact |
+            |----------|---------------------|------------------|
+            | CV | [📄 cv-gabriel-faundez-pr-${{ github.event.number }}.pdf](https://storage.googleapis.com/${{ secrets.BUCKET_NAME }}/curriculum/pr/${{ github.event.number }}/cv-gabriel-faundez.pdf) | [View Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
+            | Resume | [📄 resume-gabriel-faundez-pr-${{ github.event.number }}.pdf](https://storage.googleapis.com/${{ secrets.BUCKET_NAME }}/curriculum/pr/${{ github.event.number }}/resume-gabriel-faundez.pdf) | [View Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
+            | Portfolio | [📄 portfolio-gabriel-faundez-pr-${{ github.event.number }}.pdf](https://storage.googleapis.com/${{ secrets.BUCKET_NAME }}/curriculum/pr/${{ github.event.number }}/portfolio-gabriel-faundez.pdf) | [View Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
+
+            **🚀 Quick Access:**
+            - Click the direct download links above for immediate access to PDFs
+            - No need to navigate through GitHub artifacts interface
+            - Files are publicly accessible via Google Cloud Storage
+
+            **📁 Artifact Details:**
+            - GCS Path: `curriculum/pr/${{ github.event.number }}/`
+            - Artifact Names: `cv-gabriel-faundez-pr-${{ github.event.number }}.pdf`, `resume-gabriel-faundez-pr-${{ github.event.number }}.pdf`, `portfolio-gabriel-faundez-pr-${{ github.event.number }}.pdf`
+
+            <details>
+            <summary>🔍 Alternative: Download from GitHub Artifacts</summary>
+
+            If you prefer to download from GitHub:
+            1. Click on "View Artifacts" link above
+            2. Scroll down to the "Artifacts" section
+            3. Click on the artifact name to download the ZIP file
+            4. Extract the ZIP to get your PDF
+            </details>
+
+            ---
+            *This comment will be updated when you push new changes to this PR.*
