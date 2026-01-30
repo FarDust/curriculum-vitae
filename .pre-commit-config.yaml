@@ -71,7 +71,8 @@ exclude: |
     .*\.out$|
     .*\.fls$|
     .*\.fdb_latexmk$|
-    .*\.synctex.gz$
+    .*\.synctex.gz$|
+    .*\.bak[0-9]*$
   )$
 
 fail_fast: false
